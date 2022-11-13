@@ -19,8 +19,8 @@ class Passport(BaseModel):
 class Certificate(BaseModel):
 
     TYPE = (
-        ('F', 'Full',),
-        ('P', 'Partial')
+        ('F', 'Полный',),
+        ('P', 'Частичный')
     )
 
     name = models.CharField('Название', max_length=256, blank=True, null=True)
@@ -54,7 +54,7 @@ class Pet(BaseModel):
         blank=True,
         null=True
     )
-    vaccination_certificate = models.ForeignKey(
+    vaccination_certificate = models.OneToOneField(
         Certificate,
         verbose_name='Сертификат',
         related_name='pet_certificate',
@@ -62,7 +62,7 @@ class Pet(BaseModel):
         blank=True,
         null=True
     )
-    passport = models.ForeignKey(
+    passport = models.OneToOneField(
         Passport,
         verbose_name='Паспорт',
         related_name='pet_passport',
