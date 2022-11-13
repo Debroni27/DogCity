@@ -1,3 +1,26 @@
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import Pet, Passport, Certificate
+from core_helpers.utils import CachingPaginator
+
+
+admin.site.register(Passport)
+admin.site.register(Certificate)
+
+
+@admin.register(Pet)
+class PetAdmin(admin.ModelAdmin):
+    list_display = (
+            'name',
+            'color',
+            'age',
+            'sex',
+            'owner'
+    )
+    list_per_page = 50
+    list_display_links = ('name',)
+    list_select_related = ['owner',]
+
+    show_full_result_count = False
+    paginator = CachingPaginator
