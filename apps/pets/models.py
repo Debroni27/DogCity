@@ -1,9 +1,11 @@
-import uuid
 
+from django.contrib.auth import get_user_model
 from django.db import models
 
-from apps.users.models import User
 from core_helpers.models import BaseModel
+
+
+User = get_user_model()
 
 
 class Passport(BaseModel):
@@ -17,8 +19,8 @@ class Passport(BaseModel):
 class Certificate(BaseModel):
 
     TYPE = (
-        'F', 'Full',
-        'P', 'Partial'
+        ('F', 'Full',),
+        ('P', 'Partial')
     )
 
     name = models.CharField('Название', max_length=256, blank=True)
@@ -44,9 +46,27 @@ class Pet(BaseModel):
     color = models.CharField('окрас', max_length=256, blank=True)
     age = models.PositiveIntegerField('возраст')
     sex = models.CharField('пол питомца', max_length=1, choices=GENDER)
-    owner = models.ForeignKey(User, related_name='владелец питомца', on_delete=models.SET_NULL)
-    vaccination_certificate = models.ForeignKey(Certificate, related_name='сертификат', on_delete=models.SET_NULL)
-    passport = models.ForeignKey(Passport, related_name='паспорт', on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        User,
+        related_name='pet_owner',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    vaccination_certificate = models.ForeignKey(
+        Certificate,
+        related_name='pet_certificate',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    passport = models.ForeignKey(
+        Passport,
+        related_name='pet_passport',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = 'Питомец'

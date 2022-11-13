@@ -53,10 +53,10 @@ THIRD_PARTY = [
 ]
 
 LOCAL_APPS = [
-    'accounts.apps.AccountsConfig',
-    'pets.apps.PetsConfig',
-    'tenders.apps.TendersConfig',
-    'users.apps.UsersConfig',
+    'accounts',
+    'pets',
+    'tenders',
+    'users',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY + LOCAL_APPS
