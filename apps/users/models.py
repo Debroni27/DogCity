@@ -12,5 +12,20 @@ class User(AbstractUser):
         message="Phone number must be entered in the format: '+999999999'. "
         "Up to 15 digits allowed."
     )
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
-    info = models.CharField(max_length=256, blank=True, null=True)
+    phone_number = models.CharField(
+        'Номер телефона',
+        validators=[phone_regex],
+        max_length=17, blank=True
+    )
+    info = models.CharField(
+        'Информация о себе',
+        max_length=256,
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+

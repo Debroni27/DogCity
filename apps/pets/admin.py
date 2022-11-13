@@ -16,7 +16,9 @@ class PetAdmin(admin.ModelAdmin):
             'color',
             'age',
             'sex',
-            'owner'
+            'owner',
+            'vaccination_certificate',
+            'passport'
     )
     list_per_page = 50
     list_display_links = ('name',)
