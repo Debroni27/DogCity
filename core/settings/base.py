@@ -6,7 +6,6 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 
@@ -52,10 +51,10 @@ THIRD_PARTY = [
 ]
 
 LOCAL_APPS = [
-    'accounts',
-    'pets',
-    'tenders',
-    'users',
+    'apps.accounts',
+    'apps.pets',
+    'apps.tenders',
+    'apps.users',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY + LOCAL_APPS

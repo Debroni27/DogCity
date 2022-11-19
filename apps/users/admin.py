@@ -11,6 +11,7 @@ UserAdmin.fieldsets += (
         'fields': ('info', )
     }),
 )
+UserAdmin.list_select_related = True
 
 admin.site.register(User, UserAdmin)
 

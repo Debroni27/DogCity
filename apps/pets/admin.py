@@ -14,6 +14,7 @@ class PetAdmin(admin.ModelAdmin):
     list_display = (
             'name',
             'color',
+            'breed',
             'age',
             'sex',
             'owner',
@@ -21,7 +22,7 @@ class PetAdmin(admin.ModelAdmin):
             'passport'
     )
     list_per_page = 50
-    list_display_links = ('name',)
+    list_display_links = ('name', )
     list_select_related = ['owner', 'vaccination_certificate', 'passport']
 
     show_full_result_count = False

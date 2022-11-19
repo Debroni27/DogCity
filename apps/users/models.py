@@ -23,9 +23,12 @@ class User(AbstractUser):
         blank=True,
         null=True
     )
+    slug = models.SlugField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
+    def __str__(self):
+        return self.first_name
 
