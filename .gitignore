@@ -1,5 +1,6 @@
 __pycache__/
 __pypackages__/
+.python-version
 *.py[codz]
 *$py.class
 pip-log.txt
@@ -15,4 +16,3 @@ venv/
 .pytype/
 .idea/
 .ruff_cache/
-
