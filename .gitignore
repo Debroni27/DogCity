@@ -11,8 +11,11 @@ uv.lock
 *.aof
 *.pid
 .env
+.venv/
 venv/
 .mypy_cache/
 .pytype/
 .idea/
 .ruff_cache/
+promts
+docs/
