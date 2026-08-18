@@ -1,6 +1,6 @@
 """Value objects домена DogCity."""
 
-from src.domain.value_objects.account import AccountStatus
+from src.domain.value_objects.account import AccountStatus, BlockReason
 from src.domain.value_objects.address import (
     BUILDING_MAX_LENGTH,
     CITY_MAX_LENGTH,
@@ -26,6 +26,11 @@ from src.domain.value_objects.identifiers import (
     SitterId,
 )
 from src.domain.value_objects.money import Currency, Money
+from src.domain.value_objects.order_comment import (
+    ORDER_COMMENT_MAX_LENGTH,
+    OrderComment,
+)
+from src.domain.value_objects.order_party import OrderParty
 from src.domain.value_objects.order_status import (
     CancellationReason,
     OrderStatus,
@@ -38,6 +43,7 @@ from src.domain.value_objects.pet_profile import (
     SMALL_MAX_KG,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    BirthDate,
     Breed,
     DogSize,
     PetGender,
@@ -63,6 +69,7 @@ __all__ = (
     "EMAIL_MAX_LENGTH",
     "MEDIUM_MAX_KG",
     "NAME_MAX_LENGTH",
+    "ORDER_COMMENT_MAX_LENGTH",
     "PET_NAME_MAX_LENGTH",
     "PHONE_MAX_DIGITS",
     "PHONE_MIN_DIGITS",
@@ -77,6 +84,8 @@ __all__ = (
     "Address",
     "AdminId",
     "AggregatedRating",
+    "BirthDate",
+    "BlockReason",
     "Breed",
     "CancellationReason",
     "Currency",
@@ -84,7 +93,9 @@ __all__ = (
     "Email",
     "EntityId",
     "Money",
+    "OrderComment",
     "OrderId",
+    "OrderParty",
     "OrderStatus",
     "OwnerId",
     "PersonName",

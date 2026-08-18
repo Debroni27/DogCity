@@ -15,6 +15,7 @@ from src.domain.value_objects import (
     SMALL_MAX_KG,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    BirthDate,
     DogSize,
     PetGender,
     Weight,
@@ -110,6 +111,35 @@ def test_size_never_decreases_with_weight(first: Decimal, second: Decimal) -> No
     lighter_size = SIZE_ORDER.index(DogSize.from_weight(Weight(lighter)))
     heavier_size = SIZE_ORDER.index(DogSize.from_weight(Weight(heavier)))
     assert lighter_size <= heavier_size
+
+
+@pytest.mark.parametrize(
+    ("reference_date", "expected"),
+    [
+        (date(2020, 6, 15), 0),
+        (date(2021, 6, 14), 0),
+        (date(2021, 6, 15), 1),
+        (date(2026, 6, 14), 5),
+        (date(2026, 6, 15), 6),
+    ],
+)
+def test_age_counts_full_years(
+    birth_date: BirthDate, reference_date: date, expected: int
+) -> None:
+    """Возраст — полные года: день рождения засчитывается, канун ещё нет."""
+    assert birth_date.age_in_years(reference_date) == expected
+
+
+def test_age_on_date_before_birth_is_rejected(birth_date: BirthDate) -> None:
+    """Опорная дата раньше рождения бессмысленна и не даёт отрицательный возраст."""
+    with pytest.raises(ValidationError) as exc:
+        birth_date.age_in_years(date(2019, 1, 1))
+    assert exc.value.field == "reference_date"
+
+
+def test_age_does_not_depend_on_current_date(birth_date: BirthDate) -> None:
+    """Возраст считается на переданную дату, часы внутри VO не участвуют."""
+    assert birth_date.age_in_years(date(2030, 1, 1)) == 9
 
 
 def test_certificate_expiring_before_issue_is_rejected() -> None:

@@ -30,7 +30,7 @@ class Rating:
 
 @dataclass(frozen=True, slots=True)
 class AggregatedRating:
-    """Сводная оценка догситтера по всем его отзывам."""
+    """Сводная оценка по всем отзывам."""
 
     ratings_sum: int
     reviews_count: int
@@ -45,7 +45,7 @@ class AggregatedRating:
 
     @classmethod
     def empty(cls) -> Self:
-        """Сводная оценка ситтера без отзывов."""
+        """Сводная оценка без отзывов."""
         return cls(ratings_sum=0, reviews_count=0)
 
     @property
