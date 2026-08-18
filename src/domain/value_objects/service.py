@@ -40,9 +40,13 @@ class ServiceOffer:
 
     def __post_init__(self) -> None:
         if self.price.amount <= 0:
-            raise ValidationError("price", "должна быть положительной")
+            raise ValidationError(
+                "price", "должна быть положительной"
+            )
         if (
             self.service_type is ServiceType.WALKING
             and self.tarification is Tarification.PER_DAY
         ):
-            raise ValidationError("tarification", "выгул тарифицируется только почасово")
+            raise ValidationError(
+                "tarification", "выгул тарифицируется только почасово"
+            )

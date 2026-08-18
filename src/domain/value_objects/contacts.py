@@ -57,7 +57,11 @@ class Email:
 
     def __post_init__(self) -> None:
         if len(self.value) > EMAIL_MAX_LENGTH:
-            raise ValidationError("value", f"длиннее {EMAIL_MAX_LENGTH} символов")
+            raise ValidationError(
+                "value", f"длиннее {EMAIL_MAX_LENGTH} символов"
+            )
         local, separator, host = self.value.partition("@")
         if not separator or not local or "." not in host:
-            raise ValidationError("value", "не похож на адрес электронной почты")
+            raise ValidationError(
+                "value", "не похож на адрес электронной почты"
+            )

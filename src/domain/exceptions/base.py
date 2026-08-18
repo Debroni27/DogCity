@@ -2,8 +2,8 @@
 
 __all__ = (
     "DomainError",
-    "IllegalStateTransition",
-    "InvariantViolation",
+    "IllegalStateTransitionError",
+    "InvariantViolationError",
     "ValidationError",
 )
 
@@ -24,11 +24,11 @@ class ValidationError(DomainError):
         return f"{self.field}: {self.reason}"
 
 
-class InvariantViolation(DomainError):
+class InvariantViolationError(DomainError):
     """Сочетание корректных значений нарушает правило агрегата."""
 
 
-class IllegalStateTransition(DomainError):
+class IllegalStateTransitionError(DomainError):
     """Переход недопустим в текущем состоянии сущности."""
 
     def __init__(self, entity: str, current_state: str, transition: str) -> None:
