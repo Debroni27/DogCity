@@ -6,6 +6,8 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Self
 
+from src.domain.exceptions import ValidationError
+
 __all__ = (
     "Breed",
     "DogSize",
@@ -17,6 +19,10 @@ __all__ = (
 
 SMALL_MAX_KG = Decimal("10")
 MEDIUM_MAX_KG = Decimal("25")
+WEIGHT_MAX_KG = Decimal("150")
+PET_NAME_MAX_LENGTH = 50
+BREED_MAX_LENGTH = 100
+VACCINE_NAME_MAX_LENGTH = 100
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,16 +31,20 @@ class PetName:
 
     value: str
 
+    def __post_init__(self) -> None:
+        if len(self.value) > PET_NAME_MAX_LENGTH:
+            raise ValidationError("value", f"длиннее {PET_NAME_MAX_LENGTH} символов")
+
 
 @dataclass(frozen=True, slots=True)
 class Breed:
-    """Порода собаки.
-
-    Свободная строка, а не перечисление: список пород — справочник, который
-    ведут вне домена, и метисы в него всё равно не укладываются.
-    """
+    """Порода собаки — свободная строка, а не перечисление."""
 
     value: str
+
+    def __post_init__(self) -> None:
+        if len(self.value) > BREED_MAX_LENGTH:
+            raise ValidationError("value", f"длиннее {BREED_MAX_LENGTH} символов")
 
 
 class PetGender(StrEnum):
@@ -50,17 +60,17 @@ class Weight:
 
     kilograms: Decimal
 
+    def __post_init__(self) -> None:
+        if not self.kilograms.is_finite():
+            raise ValidationError("kilograms", "должен быть конечным числом")
+        if self.kilograms <= 0:
+            raise ValidationError("kilograms", "должен быть положительным")
+        if self.kilograms > WEIGHT_MAX_KG:
+            raise ValidationError("kilograms", f"больше {WEIGHT_MAX_KG} кг")
+
 
 class DogSize(StrEnum):
-    """Размер собаки.
-
-    Влияет на тариф и на то, возьмётся ли ситтер за питомца. Границы категорий
-    заданы включительно по верхнему краю: ``SMALL`` — до 10 кг, ``MEDIUM`` —
-    свыше 10 и до 25 кг, ``LARGE`` — свыше 25 кг.
-
-    Хранится не размер, а вес: категория выводится из него через
-    :meth:`from_weight`, поэтому пересмотр границ не требует миграции данных.
-    """
+    """Размер собаки. Не хранится, а выводится из веса через :meth:`from_weight`."""
 
     SMALL = "small"
     MEDIUM = "medium"
@@ -83,3 +93,11 @@ class VaccinationCertificate:
     vaccine_name: str
     issued_on: date
     valid_until: date
+
+    def __post_init__(self) -> None:
+        if len(self.vaccine_name) > VACCINE_NAME_MAX_LENGTH:
+            raise ValidationError(
+                "vaccine_name", f"длиннее {VACCINE_NAME_MAX_LENGTH} символов"
+            )
+        if self.valid_until <= self.issued_on:
+            raise ValidationError("valid_until", "должна быть позже issued_on")

@@ -1,15 +1,4 @@
-"""Статус заказа.
-
-Допустимый жизненный цикл::
-
-    PENDING ──confirm──> CONFIRMED ──start──> IN_PROGRESS ──complete──> COMPLETED
-       │                     │
-       ├──reject──> REJECTED │
-       └──cancel──> CANCELLED <──cancel──┘
-
-``COMPLETED``, ``CANCELLED`` и ``REJECTED`` — терминальные. Проверка переходов
-живёт в агрегате ``Order``, здесь — только перечисление состояний.
-"""
+"""Статусы заказа и причины его прекращения."""
 
 from enum import StrEnum
 
@@ -59,13 +48,7 @@ class RejectionReason(StrEnum):
 
 
 class CancellationReason(StrEnum):
-    """Причина отмены заказа — переход в ``CANCELLED``.
-
-    Отделена от :class:`RejectionReason`: отказ возможен только до
-    подтверждения и только со стороны ситтера, отмена — с обеих сторон
-    и до начала оказания услуги. Инициатор фиксируется в событии отмены,
-    здесь — только причина.
-    """
+    """Причина отмены заказа — переход в ``CANCELLED``."""
 
     PLANS_CHANGED = "plans_changed"
     """Планы изменились."""

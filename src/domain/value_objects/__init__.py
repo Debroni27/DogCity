@@ -1,8 +1,4 @@
-"""Value objects домена DogCity.
-
-Все типы — ``frozen`` dataclass'ы и ``StrEnum``: неизменяемые бизнес-значения
-без идентичности.
-"""
+"""Value objects домена DogCity."""
 
 from src.domain.value_objects.account import AccountStatus
 from src.domain.value_objects.address import Address

@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Self
 
+from src.domain.exceptions import ValidationError
+
 __all__ = (
     "AggregatedRating",
     "Rating",
@@ -19,18 +21,25 @@ class Rating:
 
     value: int
 
+    def __post_init__(self) -> None:
+        if not RATING_MIN <= self.value <= RATING_MAX:
+            raise ValidationError("value", f"вне диапазона {RATING_MIN}–{RATING_MAX}")
+
 
 @dataclass(frozen=True, slots=True)
 class AggregatedRating:
-    """Сводная оценка догситтера по всем его отзывам.
-
-    Хранится сумма оценок, а не среднее: пересчёт среднего от среднего
-    накапливает погрешность и не позволяет добавить отзыв, не зная всей
-    истории.
-    """
+    """Сводная оценка догситтера по всем его отзывам."""
 
     ratings_sum: int
     reviews_count: int
+
+    def __post_init__(self) -> None:
+        if self.reviews_count < 0:
+            raise ValidationError("reviews_count", "не может быть отрицательным")
+        lowest = RATING_MIN * self.reviews_count
+        highest = RATING_MAX * self.reviews_count
+        if not lowest <= self.ratings_sum <= highest:
+            raise ValidationError("ratings_sum", "несовместима с числом отзывов")
 
     @classmethod
     def empty(cls) -> Self:
@@ -39,21 +48,13 @@ class AggregatedRating:
 
     @property
     def average(self) -> Decimal | None:
-        """Средняя оценка или ``None``, если отзывов ещё нет.
-
-        Отсутствие оценок — не то же самое, что нулевая оценка, поэтому
-        ``None``, а не ``Decimal(0)``.
-        """
+        """Средняя оценка или ``None``, если отзывов ещё нет."""
         if self.reviews_count == 0:
             return None
         return Decimal(self.ratings_sum) / Decimal(self.reviews_count)
 
     def with_review(self, rating: Rating) -> "AggregatedRating":
-        """Вернуть сводную оценку с учётом ещё одного отзыва.
-
-        Исходный экземпляр не меняется: добавление отзыва — это новое
-        значение, а не правка старого.
-        """
+        """Вернуть сводную оценку с учётом ещё одного отзыва."""
         return AggregatedRating(
             ratings_sum=self.ratings_sum + rating.value,
             reviews_count=self.reviews_count + 1,
