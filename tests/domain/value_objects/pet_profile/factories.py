@@ -6,6 +6,7 @@ from decimal import Decimal
 import factory
 
 from src.domain.value_objects import (
+    BirthDate,
     Breed,
     PetName,
     VaccinationCertificate,
@@ -20,6 +21,15 @@ class PetNameFactory(factory.Factory):
         model = PetName
 
     value = factory.Faker("first_name", locale="ru_RU")
+
+
+class BirthDateFactory(factory.Factory):
+    """Дата рождения взрослой собаки."""
+
+    class Meta:
+        model = BirthDate
+
+    value = date(2020, 6, 15)
 
 
 class BreedFactory(factory.Factory):

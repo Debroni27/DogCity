@@ -10,6 +10,7 @@ from src.domain.exceptions import ValidationError
 
 __all__ = (
     "BREED_MAX_LENGTH",
+    "BirthDate",
     "MEDIUM_MAX_KG",
     "PET_NAME_MAX_LENGTH",
     "SMALL_MAX_KG",
@@ -51,6 +52,25 @@ class Breed:
     def __post_init__(self) -> None:
         if len(self.value) > BREED_MAX_LENGTH:
             raise ValidationError("value", f"длиннее {BREED_MAX_LENGTH} символов")
+
+
+@dataclass(frozen=True, slots=True)
+class BirthDate:
+    """Дата рождения питомца."""
+
+    value: date
+
+    def age_in_years(self, reference_date: date) -> int:
+        """Полных лет на указанную дату."""
+        if reference_date < self.value:
+            raise ValidationError("reference_date", "раньше даты рождения")
+        years = reference_date.year - self.value.year
+        if (reference_date.month, reference_date.day) < (
+            self.value.month,
+            self.value.day,
+        ):
+            years -= 1
+        return years
 
 
 class PetGender(StrEnum):
