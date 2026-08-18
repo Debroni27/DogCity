@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from src.domain.exceptions import ValidationError
 
-__all__ = ("ReviewText",)
+__all__ = ("REVIEW_TEXT_MAX_LENGTH", "ReviewText")
 
 REVIEW_TEXT_MAX_LENGTH = 2000
 
