@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    container: python:3.12.8-slim
+    steps:
+      - name: Получить исходники
+        uses: actions/checkout@v4
+
+      - name: Установить uv
+        run: |
+          echo "▶ Установка uv"
+          pip install --no-cache-dir uv
+          uv --version
+
+      - name: Установить зависимости
+        run: |
+          echo "▶ uv sync"
+          uv sync
+          echo "Версии инструментов:"
+          uv run ruff --version
+          uv run mypy --version
+          uv run pytest --version
+
+      - name: Линтинг
+        run: |
+          echo "▶ ruff check ."
+          uv run ruff check .
+
+      - name: Типизация
+        run: |
+          echo "▶ mypy"
+          uv run mypy --pretty
+
+      - name: Тесты
+        run: |
+          echo "▶ pytest tests"
+          uv run pytest tests -v
