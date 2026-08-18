@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from src.domain.exceptions import ValidationError
 
-__all__ = ("Address",)
+__all__ = ("BUILDING_MAX_LENGTH", "CITY_MAX_LENGTH", "STREET_MAX_LENGTH", "Address")
 
 CITY_MAX_LENGTH = 100
 STREET_MAX_LENGTH = 200

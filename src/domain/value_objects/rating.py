@@ -7,6 +7,8 @@ from typing import Self
 from src.domain.exceptions import ValidationError
 
 __all__ = (
+    "RATING_MAX",
+    "RATING_MIN",
     "AggregatedRating",
     "Rating",
 )

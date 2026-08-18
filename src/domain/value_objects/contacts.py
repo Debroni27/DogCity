@@ -5,6 +5,10 @@ from dataclasses import dataclass
 from src.domain.exceptions import ValidationError
 
 __all__ = (
+    "EMAIL_MAX_LENGTH",
+    "NAME_MAX_LENGTH",
+    "PHONE_MAX_DIGITS",
+    "PHONE_MIN_DIGITS",
     "Email",
     "PersonName",
     "PhoneNumber",
