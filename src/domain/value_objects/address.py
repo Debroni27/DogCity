@@ -22,10 +22,18 @@ class Address:
 
     def __post_init__(self) -> None:
         if len(self.city) > CITY_MAX_LENGTH:
-            raise ValidationError("city", f"длиннее {CITY_MAX_LENGTH} символов")
+            raise ValidationError(
+                "city", f"длиннее {CITY_MAX_LENGTH} символов"
+            )
         if len(self.street) > STREET_MAX_LENGTH:
-            raise ValidationError("street", f"длиннее {STREET_MAX_LENGTH} символов")
+            raise ValidationError(
+                "street", f"длиннее {STREET_MAX_LENGTH} символов"
+            )
         if len(self.building) > BUILDING_MAX_LENGTH:
-            raise ValidationError("building", f"длиннее {BUILDING_MAX_LENGTH} символов")
+            raise ValidationError(
+                "building", f"длиннее {BUILDING_MAX_LENGTH} символов"
+            )
         if self.apartment is not None and len(self.apartment) > BUILDING_MAX_LENGTH:
-            raise ValidationError("apartment", f"длиннее {BUILDING_MAX_LENGTH} символов")
+            raise ValidationError(
+                "apartment", f"длиннее {BUILDING_MAX_LENGTH} символов"
+            )
