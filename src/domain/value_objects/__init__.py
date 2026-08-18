@@ -1,6 +1,11 @@
 """Value objects домена DogCity."""
 
-from src.domain.value_objects.account import AccountStatus, BlockReason
+from src.domain.value_objects.account import (
+    AccountStatus,
+    BlockReason,
+    VerificationRejectionReason,
+    VerificationStatus,
+)
 from src.domain.value_objects.address import (
     BUILDING_MAX_LENGTH,
     CITY_MAX_LENGTH,
@@ -18,7 +23,9 @@ from src.domain.value_objects.contacts import (
 )
 from src.domain.value_objects.identifiers import (
     AdminId,
+    CorrelationId,
     EntityId,
+    EventId,
     OrderId,
     OwnerId,
     PetId,
@@ -59,7 +66,6 @@ from src.domain.value_objects.rating import (
 )
 from src.domain.value_objects.review import REVIEW_TEXT_MAX_LENGTH, ReviewText
 from src.domain.value_objects.service import ServiceOffer, ServiceType, Tarification
-from src.domain.value_objects.sitter_profile import VerificationStatus
 from src.domain.value_objects.time_interval import TimeInterval
 
 __all__ = (
@@ -88,10 +94,12 @@ __all__ = (
     "BlockReason",
     "Breed",
     "CancellationReason",
+    "CorrelationId",
     "Currency",
     "DogSize",
     "Email",
     "EntityId",
+    "EventId",
     "Money",
     "OrderComment",
     "OrderId",
@@ -113,6 +121,7 @@ __all__ = (
     "Tarification",
     "TimeInterval",
     "VaccinationCertificate",
+    "VerificationRejectionReason",
     "VerificationStatus",
     "Weight",
 )
