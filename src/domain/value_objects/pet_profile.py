@@ -10,12 +10,12 @@ from src.domain.exceptions import ValidationError
 
 __all__ = (
     "BREED_MAX_LENGTH",
-    "BirthDate",
     "MEDIUM_MAX_KG",
     "PET_NAME_MAX_LENGTH",
     "SMALL_MAX_KG",
     "VACCINE_NAME_MAX_LENGTH",
     "WEIGHT_MAX_KG",
+    "BirthDate",
     "Breed",
     "DogSize",
     "PetGender",
