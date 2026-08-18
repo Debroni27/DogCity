@@ -6,7 +6,9 @@ from uuid import UUID, uuid4
 
 __all__ = (
     "AdminId",
+    "CorrelationId",
     "EntityId",
+    "EventId",
     "OrderId",
     "OwnerId",
     "PetId",
@@ -59,5 +61,17 @@ class ReviewId(EntityId):
 
 class AdminId(EntityId):
     """Идентификатор администратора сервиса."""
+
+    __slots__ = ()
+
+
+class EventId(EntityId):
+    """Идентификатор доменного события."""
+
+    __slots__ = ()
+
+
+class CorrelationId(EntityId):
+    """Сквозная метка одного пользовательского действия."""
 
     __slots__ = ()
