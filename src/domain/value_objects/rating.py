@@ -22,12 +22,7 @@ class Rating:
 
 @dataclass(frozen=True, slots=True)
 class AggregatedRating:
-    """Сводная оценка догситтера по всем его отзывам.
-
-    Хранится сумма оценок, а не среднее: пересчёт среднего от среднего
-    накапливает погрешность и не позволяет добавить отзыв, не зная всей
-    истории.
-    """
+    """Сводная оценка догситтера по всем его отзывам."""
 
     ratings_sum: int
     reviews_count: int
@@ -39,21 +34,13 @@ class AggregatedRating:
 
     @property
     def average(self) -> Decimal | None:
-        """Средняя оценка или ``None``, если отзывов ещё нет.
-
-        Отсутствие оценок — не то же самое, что нулевая оценка, поэтому
-        ``None``, а не ``Decimal(0)``.
-        """
+        """Средняя оценка или ``None``, если отзывов ещё нет."""
         if self.reviews_count == 0:
             return None
         return Decimal(self.ratings_sum) / Decimal(self.reviews_count)
 
     def with_review(self, rating: Rating) -> "AggregatedRating":
-        """Вернуть сводную оценку с учётом ещё одного отзыва.
-
-        Исходный экземпляр не меняется: добавление отзыва — это новое
-        значение, а не правка старого.
-        """
+        """Вернуть сводную оценку с учётом ещё одного отзыва."""
         return AggregatedRating(
             ratings_sum=self.ratings_sum + rating.value,
             reviews_count=self.reviews_count + 1,

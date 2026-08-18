@@ -8,11 +8,7 @@ __all__ = ("TimeInterval",)
 
 @dataclass(frozen=True, slots=True)
 class TimeInterval:
-    """Интервал ``(starts_at, ends_at)``.
-
-    Обе границы — timezone-aware ``datetime`` в UTC. Наивные ``datetime``
-    в домен не попадают: время приводится к UTC на границе приложения.
-    """
+    """Интервал ``(starts_at, ends_at)``. Границы — tz-aware ``datetime`` в UTC."""
 
     starts_at: datetime
     ends_at: datetime

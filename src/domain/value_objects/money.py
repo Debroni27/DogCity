@@ -1,8 +1,4 @@
-"""Денежные суммы.
-
-Сумма хранится в ``Decimal``: ``float`` для денег непригоден из-за
-погрешности двоичного представления.
-"""
+"""Денежные суммы."""
 
 from dataclasses import dataclass, field
 from decimal import Decimal
