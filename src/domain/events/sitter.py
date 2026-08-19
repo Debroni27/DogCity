@@ -10,6 +10,7 @@ from src.domain.value_objects import (
     PersonName,
     PhoneNumber,
     Rating,
+    ServiceFormat,
     ServiceType,
     SitterId,
     Tarification,
@@ -61,6 +62,7 @@ class OfferPublished(DomainEvent):
     sitter_id: SitterId
     service_type: ServiceType
     tarification: Tarification
+    service_format: ServiceFormat
     price: Money
 
 
@@ -71,6 +73,7 @@ class OfferWithdrawn(DomainEvent):
     sitter_id: SitterId
     service_type: ServiceType
     tarification: Tarification
+    service_format: ServiceFormat
 
 
 @dataclass(frozen=True, slots=True)

@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from src.domain.events.base import DomainEvent
-from src.domain.value_objects import OrderId, SitterId, TimeInterval
+from src.domain.value_objects import OrderId, ServiceFormat, SitterId, TimeInterval
 
 __all__ = (
     "BookingReleased",
@@ -18,6 +18,7 @@ class BookingReserved(DomainEvent):
     sitter_id: SitterId
     order_id: OrderId
     interval: TimeInterval
+    service_format: ServiceFormat
 
 
 @dataclass(frozen=True, slots=True)

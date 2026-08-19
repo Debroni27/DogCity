@@ -7,6 +7,7 @@ from src.domain.exceptions import ValidationError
 from src.domain.value_objects.money import Money
 
 __all__ = (
+    "ServiceFormat",
     "ServiceOffer",
     "ServiceType",
     "Tarification",
@@ -30,13 +31,24 @@ class Tarification(StrEnum):
     PER_DAY = "per_day"
 
 
+class ServiceFormat(StrEnum):
+    """Формат оказания услуги: рядом с чужими собаками или наедине."""
+
+    SHARED = "shared"
+    """Питомец может оказаться у догситтера одновременно с чужими собаками."""
+
+    INDIVIDUAL = "individual"
+    """Догситтер занят только этим питомцем всё время оказания услуги."""
+
+
 @dataclass(frozen=True, slots=True)
 class ServiceOffer:
-    """Предложение ситтера: услуга, цена и единица тарификации."""
+    """Предложение догситтера: услуга, формат, цена и единица тарификации."""
 
     service_type: ServiceType
     price: Money
     tarification: Tarification
+    service_format: ServiceFormat
 
     def __post_init__(self) -> None:
         if self.price.amount <= 0:

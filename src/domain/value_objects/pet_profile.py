@@ -15,6 +15,7 @@ __all__ = (
     "SMALL_MAX_KG",
     "VACCINE_NAME_MAX_LENGTH",
     "WEIGHT_MAX_KG",
+    "BehaviorTrait",
     "BirthDate",
     "Breed",
     "DogSize",
@@ -78,6 +79,20 @@ class PetGender(StrEnum):
 
     MALE = "male"
     FEMALE = "female"
+
+
+class BehaviorTrait(StrEnum):
+    """Особенность поведения собаки, по которой догситтер решает, брать ли заказ."""
+
+    AGGRESSIVE_TO_DOGS = "aggressive_to_dogs"
+    AGGRESSIVE_TO_PEOPLE = "aggressive_to_people"
+    AFRAID_OF_DOGS = "afraid_of_dogs"
+    AFRAID_OF_NOISE = "afraid_of_noise"
+    PULLS_ON_LEASH = "pulls_on_leash"
+    ESCAPE_PRONE = "escape_prone"
+    SEPARATION_ANXIETY = "separation_anxiety"
+    NOT_HOUSE_TRAINED = "not_house_trained"
+    BARKS_A_LOT = "barks_a_lot"
 
 
 @dataclass(frozen=True, slots=True)
