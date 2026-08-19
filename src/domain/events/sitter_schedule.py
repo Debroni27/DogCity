@@ -8,6 +8,7 @@ from src.domain.value_objects import OrderId, ServiceFormat, SitterId, TimeInter
 __all__ = (
     "BookingReleased",
     "BookingReserved",
+    "SitterScheduleEvent",
 )
 
 
@@ -27,3 +28,7 @@ class BookingReleased(DomainEvent):
 
     sitter_id: SitterId
     order_id: OrderId
+
+
+type SitterScheduleEvent = BookingReleased | BookingReserved
+"""Любое событие расписания догситтера."""

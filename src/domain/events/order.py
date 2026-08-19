@@ -22,6 +22,7 @@ __all__ = (
     "OrderCancelled",
     "OrderCompleted",
     "OrderConfirmed",
+    "OrderEvent",
     "OrderPlaced",
     "OrderRejected",
     "OrderStarted",
@@ -80,3 +81,14 @@ class OrderCompleted(DomainEvent):
     """Услуга оказана."""
 
     order_id: OrderId
+
+
+type OrderEvent = (
+    OrderCancelled
+    | OrderCompleted
+    | OrderConfirmed
+    | OrderPlaced
+    | OrderRejected
+    | OrderStarted
+)
+"""Любое событие заказа: исчерпывающий разбор — в ``Order._apply``."""
