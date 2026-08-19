@@ -50,6 +50,7 @@ from src.domain.value_objects.pet_profile import (
     SMALL_MAX_KG,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    BehaviorTrait,
     BirthDate,
     Breed,
     DogSize,
@@ -65,12 +66,23 @@ from src.domain.value_objects.rating import (
     Rating,
 )
 from src.domain.value_objects.review import REVIEW_TEXT_MAX_LENGTH, ReviewText
-from src.domain.value_objects.service import ServiceOffer, ServiceType, Tarification
+from src.domain.value_objects.service import (
+    ServiceFormat,
+    ServiceOffer,
+    ServiceType,
+    Tarification,
+)
+from src.domain.value_objects.sitter_profile import (
+    CAPACITY_MAX,
+    AcceptedDogSizes,
+    Capacity,
+)
 from src.domain.value_objects.time_interval import TimeInterval
 
 __all__ = (
     "BREED_MAX_LENGTH",
     "BUILDING_MAX_LENGTH",
+    "CAPACITY_MAX",
     "CITY_MAX_LENGTH",
     "EMAIL_MAX_LENGTH",
     "MEDIUM_MAX_KG",
@@ -86,14 +98,17 @@ __all__ = (
     "STREET_MAX_LENGTH",
     "VACCINE_NAME_MAX_LENGTH",
     "WEIGHT_MAX_KG",
+    "AcceptedDogSizes",
     "AccountStatus",
     "Address",
     "AdminId",
     "AggregatedRating",
+    "BehaviorTrait",
     "BirthDate",
     "BlockReason",
     "Breed",
     "CancellationReason",
+    "Capacity",
     "CorrelationId",
     "Currency",
     "DogSize",
@@ -115,6 +130,7 @@ __all__ = (
     "RejectionReason",
     "ReviewId",
     "ReviewText",
+    "ServiceFormat",
     "ServiceOffer",
     "ServiceType",
     "SitterId",

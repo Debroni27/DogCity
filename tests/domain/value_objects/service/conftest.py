@@ -8,5 +8,5 @@ from tests.domain.value_objects.service.factories import ServiceOfferFactory
 
 @pytest.fixture
 def service_offer() -> ServiceOffer:
-    """Предложение с допустимой парой услуги и тарификации."""
+    """Групповое предложение с допустимой парой услуги и тарификации."""
     return ServiceOfferFactory()

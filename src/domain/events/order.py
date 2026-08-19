@@ -13,9 +13,8 @@ from src.domain.value_objects import (
     OwnerId,
     PetId,
     RejectionReason,
-    ServiceType,
+    ServiceOffer,
     SitterId,
-    Tarification,
     TimeInterval,
 )
 
@@ -37,9 +36,7 @@ class OrderPlaced(DomainEvent):
     owner_id: OwnerId
     sitter_id: SitterId
     pet_id: PetId
-    service_type: ServiceType
-    tarification: Tarification
-    price_per_unit: Money
+    offer: ServiceOffer
     interval: TimeInterval
     address: Address
 

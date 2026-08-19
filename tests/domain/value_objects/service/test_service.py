@@ -3,7 +3,7 @@
 import pytest
 
 from src.domain.exceptions import ValidationError
-from src.domain.value_objects import Money, ServiceType, Tarification
+from src.domain.value_objects import Money, ServiceFormat, ServiceType, Tarification
 from tests.domain.value_objects.service.factories import ServiceOfferFactory
 
 
@@ -14,9 +14,13 @@ from tests.domain.value_objects.service.factories import ServiceOfferFactory
         (ServiceType.BOARDING, "boarding"),
         (Tarification.PER_HOUR, "per_hour"),
         (Tarification.PER_DAY, "per_day"),
+        (ServiceFormat.SHARED, "shared"),
+        (ServiceFormat.INDIVIDUAL, "individual"),
     ],
 )
-def test_value_is_stable(member: ServiceType | Tarification, expected: str) -> None:
+def test_value_is_stable(
+    member: ServiceType | Tarification | ServiceFormat, expected: str
+) -> None:
     """Значение зафиксировано контрактом: переименование ломает совместимость."""
     assert member.value == expected
 
@@ -51,4 +55,14 @@ def test_allowed_pairs_are_accepted(
     """Передержка бывает и почасовой, и посуточной: собаку необязательно оставлять."""
     assert ServiceOfferFactory(
         service_type=service_type, tarification=tarification
+    )
+
+
+@pytest.mark.parametrize("service_format", list(ServiceFormat))
+def test_any_service_is_offered_in_both_formats(service_format: ServiceFormat) -> None:
+    """Запрещённых сочетаний формата и услуги нет: индивидуальным бывает и выгул."""
+    assert ServiceOfferFactory(
+        service_type=ServiceType.WALKING,
+        tarification=Tarification.PER_HOUR,
+        service_format=service_format,
     )

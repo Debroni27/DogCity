@@ -15,6 +15,7 @@ from src.domain.value_objects import (
     SMALL_MAX_KG,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    BehaviorTrait,
     BirthDate,
     DogSize,
     PetGender,
@@ -59,6 +60,25 @@ def test_breed_accepts_mixed_breed() -> None:
 def test_gender_value_is_stable(gender: PetGender, expected: str) -> None:
     """Значение зафиксировано контрактом: переименование ломает совместимость."""
     assert gender.value == expected
+
+
+@pytest.mark.parametrize(
+    ("trait", "expected"),
+    [
+        (BehaviorTrait.AGGRESSIVE_TO_DOGS, "aggressive_to_dogs"),
+        (BehaviorTrait.AGGRESSIVE_TO_PEOPLE, "aggressive_to_people"),
+        (BehaviorTrait.AFRAID_OF_DOGS, "afraid_of_dogs"),
+        (BehaviorTrait.AFRAID_OF_NOISE, "afraid_of_noise"),
+        (BehaviorTrait.PULLS_ON_LEASH, "pulls_on_leash"),
+        (BehaviorTrait.ESCAPE_PRONE, "escape_prone"),
+        (BehaviorTrait.SEPARATION_ANXIETY, "separation_anxiety"),
+        (BehaviorTrait.NOT_HOUSE_TRAINED, "not_house_trained"),
+        (BehaviorTrait.BARKS_A_LOT, "barks_a_lot"),
+    ],
+)
+def test_behavior_trait_value_is_stable(trait: BehaviorTrait, expected: str) -> None:
+    """Значение зафиксировано контрактом: переименование ломает совместимость."""
+    assert trait.value == expected
 
 
 def test_weight_must_be_positive() -> None:
