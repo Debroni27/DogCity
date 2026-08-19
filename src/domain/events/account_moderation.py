@@ -14,6 +14,7 @@ from src.domain.value_objects import (
 __all__ = (
     "AccountBlocked",
     "AccountDeleted",
+    "AccountModerationEvent",
     "AccountUnblocked",
     "AccountVerified",
     "DocumentsSubmitted",
@@ -75,3 +76,15 @@ class AccountDeleted(DomainEvent):
     """Участник удалил учётную запись, данные обезличены."""
 
     account_id: OwnerId | SitterId
+
+
+type AccountModerationEvent = (
+    AccountBlocked
+    | AccountDeleted
+    | AccountUnblocked
+    | AccountVerified
+    | DocumentsSubmitted
+    | ModerationOpened
+    | VerificationRejected
+)
+"""Любое событие модерации учётной записи."""

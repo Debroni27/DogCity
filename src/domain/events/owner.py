@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from src.domain.events.base import DomainEvent
 from src.domain.value_objects import (
     Address,
+    BehaviorTrait,
     BirthDate,
     Breed,
     Email,
@@ -22,9 +23,11 @@ from src.domain.value_objects import (
 __all__ = (
     "OwnerAddressChanged",
     "OwnerContactsChanged",
+    "OwnerEvent",
     "OwnerRegistered",
     "OwnerReviewReceived",
     "PetAdded",
+    "PetBehaviorUpdated",
     "PetRemoved",
     "PetWeightUpdated",
     "VaccinationAdded",
@@ -72,6 +75,7 @@ class PetAdded(DomainEvent):
     birth_date: BirthDate
     weight: Weight
     is_neutered: bool
+    behavior_traits: frozenset[BehaviorTrait]
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,8 +105,31 @@ class VaccinationAdded(DomainEvent):
 
 
 @dataclass(frozen=True, slots=True)
+class PetBehaviorUpdated(DomainEvent):
+    """Владелец уточнил особенности поведения питомца."""
+
+    owner_id: OwnerId
+    pet_id: PetId
+    behavior_traits: frozenset[BehaviorTrait]
+
+
+@dataclass(frozen=True, slots=True)
 class OwnerReviewReceived(DomainEvent):
     """О владельце оставлен отзыв с оценкой, рейтинг пересчитан."""
 
     owner_id: OwnerId
     rating: Rating
+
+
+type OwnerEvent = (
+    OwnerAddressChanged
+    | OwnerContactsChanged
+    | OwnerRegistered
+    | OwnerReviewReceived
+    | PetAdded
+    | PetBehaviorUpdated
+    | PetRemoved
+    | PetWeightUpdated
+    | VaccinationAdded
+)
+"""Любое событие владельца, включая события его питомцев."""

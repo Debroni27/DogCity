@@ -13,7 +13,7 @@ from src.domain.value_objects import (
     SitterId,
 )
 
-__all__ = ("ReviewPublished",)
+__all__ = ("ReviewEvent", "ReviewPublished")
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,3 +27,7 @@ class ReviewPublished(DomainEvent):
     author: OrderParty
     text: ReviewText
     rating: Rating | None = None
+
+
+type ReviewEvent = ReviewPublished
+"""Любое событие отзыва."""
