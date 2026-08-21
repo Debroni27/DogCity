@@ -16,5 +16,7 @@ class ReviewText:
     value: str
 
     def __post_init__(self) -> None:
+        if not self.value.strip():
+            raise ValidationError("value", "пустой: отзыв без текста не публикуется")
         if len(self.value) > REVIEW_TEXT_MAX_LENGTH:
             raise ValidationError("value", f"длиннее {REVIEW_TEXT_MAX_LENGTH} символов")

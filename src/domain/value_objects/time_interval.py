@@ -5,7 +5,9 @@ from datetime import datetime, timedelta
 
 from src.domain.exceptions import ValidationError
 
-__all__ = ("TimeInterval",)
+__all__ = ("INTERVAL_MAX_DURATION", "TimeInterval")
+
+INTERVAL_MAX_DURATION = timedelta(days=31)
 
 
 @dataclass(frozen=True, slots=True)
@@ -22,6 +24,10 @@ class TimeInterval:
             raise ValidationError("ends_at", "должен быть timezone-aware")
         if self.starts_at >= self.ends_at:
             raise ValidationError("ends_at", "должен быть позже starts_at")
+        if self.ends_at - self.starts_at > INTERVAL_MAX_DURATION:
+            raise ValidationError(
+                "ends_at", f"интервал длиннее {INTERVAL_MAX_DURATION.days} дней"
+            )
 
     @property
     def duration(self) -> timedelta:

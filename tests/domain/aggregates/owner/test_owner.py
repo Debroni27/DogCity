@@ -18,6 +18,7 @@ from src.domain.value_objects import (
     DogSize,
     PetId,
     Rating,
+    VaccinationCertificate,
     Weight,
 )
 from tests.domain.aggregates.owner.factories import add_pet
@@ -27,9 +28,6 @@ from tests.domain.value_objects.contacts.factories import (
     EmailFactory,
     PersonNameFactory,
     PhoneNumberFactory,
-)
-from tests.domain.value_objects.pet_profile.factories import (
-    VaccinationCertificateFactory,
 )
 
 
@@ -107,27 +105,24 @@ def test_weight_of_unknown_pet_cannot_be_updated(owner: Owner) -> None:
         )
 
 
-def test_vaccinations_accumulate(owner: Owner) -> None:
+def test_vaccinations_accumulate(
+    owner: Owner, certificate: VaccinationCertificate
+) -> None:
     """Отметки о прививках копятся, а не замещают друг друга."""
     pet_id = add_pet(owner)
-    owner.add_vaccination(
-        pet_id, VaccinationCertificateFactory(), OCCURRED_AT, CorrelationId.new()
-    )
-    owner.add_vaccination(
-        pet_id, VaccinationCertificateFactory(), OCCURRED_AT, CorrelationId.new()
-    )
+    owner.add_vaccination(pet_id, certificate, OCCURRED_AT, CorrelationId.new())
+    owner.add_vaccination(pet_id, certificate, OCCURRED_AT, CorrelationId.new())
     (pet,) = owner.pets
     assert len(pet.vaccinations) == 2
 
 
-def test_vaccination_of_unknown_pet_is_refused(owner: Owner) -> None:
+def test_vaccination_of_unknown_pet_is_refused(
+    owner: Owner, certificate: VaccinationCertificate
+) -> None:
     """Прививку можно добавить только своему питомцу."""
     with pytest.raises(InvariantViolationError):
         owner.add_vaccination(
-            PetId.new(),
-            VaccinationCertificateFactory(),
-            OCCURRED_AT,
-            CorrelationId.new(),
+            PetId.new(), certificate, OCCURRED_AT, CorrelationId.new()
         )
 
 

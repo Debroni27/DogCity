@@ -8,7 +8,7 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from src.domain.exceptions import ValidationError
-from src.domain.value_objects import TimeInterval
+from src.domain.value_objects import INTERVAL_MAX_DURATION, TimeInterval
 from tests.domain.value_objects.time_interval.factories import TimeIntervalFactory
 
 aware_moments = st.datetimes(
@@ -43,6 +43,21 @@ def test_zero_length_interval_is_rejected(base_moment: datetime) -> None:
     """Услуга нулевой длительности не услуга."""
     with pytest.raises(ValidationError):
         TimeIntervalFactory(ends_at=base_moment)
+
+
+def test_interval_longer_than_limit_is_rejected(base_moment: datetime) -> None:
+    """Услуга длиннее предельного срока не бронируется одним заказом."""
+    with pytest.raises(ValidationError) as exc:
+        TimeIntervalFactory(
+            ends_at=base_moment + INTERVAL_MAX_DURATION + timedelta(seconds=1)
+        )
+    assert exc.value.field == "ends_at"
+
+
+def test_interval_at_max_duration_is_accepted(base_moment: datetime) -> None:
+    """Граница длительности включительна."""
+    interval = TimeIntervalFactory(ends_at=base_moment + INTERVAL_MAX_DURATION)
+    assert interval.duration == INTERVAL_MAX_DURATION
 
 
 def test_interval_in_the_past_is_accepted() -> None:

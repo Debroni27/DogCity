@@ -1,7 +1,7 @@
 """Характеристики питомца, влияющие на оказание услуги."""
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from enum import StrEnum
 from typing import Self
@@ -9,12 +9,15 @@ from typing import Self
 from src.domain.exceptions import ValidationError
 
 __all__ = (
+    "BIRTH_DATE_MIN",
     "BREED_MAX_LENGTH",
     "MEDIUM_MAX_KG",
     "PET_NAME_MAX_LENGTH",
     "SMALL_MAX_KG",
+    "VACCINATION_MAX_PERIOD",
     "VACCINE_NAME_MAX_LENGTH",
     "WEIGHT_MAX_KG",
+    "WEIGHT_MIN_KG",
     "BehaviorTrait",
     "BirthDate",
     "Breed",
@@ -25,9 +28,12 @@ __all__ = (
     "Weight",
 )
 
+BIRTH_DATE_MIN = date(1990, 1, 1)
 SMALL_MAX_KG = Decimal("10")
 MEDIUM_MAX_KG = Decimal("25")
+WEIGHT_MIN_KG = Decimal("1")
 WEIGHT_MAX_KG = Decimal("150")
+VACCINATION_MAX_PERIOD = timedelta(days=366)
 PET_NAME_MAX_LENGTH = 50
 BREED_MAX_LENGTH = 100
 VACCINE_NAME_MAX_LENGTH = 100
@@ -40,6 +46,8 @@ class PetName:
     value: str
 
     def __post_init__(self) -> None:
+        if not self.value.strip():
+            raise ValidationError("value", "пустое или из одних пробелов")
         if len(self.value) > PET_NAME_MAX_LENGTH:
             raise ValidationError("value", f"длиннее {PET_NAME_MAX_LENGTH} символов")
 
@@ -51,6 +59,8 @@ class Breed:
     value: str
 
     def __post_init__(self) -> None:
+        if not self.value.strip():
+            raise ValidationError("value", "пустое или из одних пробелов")
         if len(self.value) > BREED_MAX_LENGTH:
             raise ValidationError("value", f"длиннее {BREED_MAX_LENGTH} символов")
 
@@ -60,6 +70,10 @@ class BirthDate:
     """Дата рождения питомца."""
 
     value: date
+
+    def __post_init__(self) -> None:
+        if self.value < BIRTH_DATE_MIN:
+            raise ValidationError("value", f"раньше {BIRTH_DATE_MIN.isoformat()}")
 
     def age_in_years(self, reference_date: date) -> int:
         """Полных лет на указанную дату."""
@@ -104,8 +118,8 @@ class Weight:
     def __post_init__(self) -> None:
         if not self.kilograms.is_finite():
             raise ValidationError("kilograms", "должен быть конечным числом")
-        if self.kilograms <= 0:
-            raise ValidationError("kilograms", "должен быть положительным")
+        if self.kilograms < WEIGHT_MIN_KG:
+            raise ValidationError("kilograms", f"меньше {WEIGHT_MIN_KG} кг")
         if self.kilograms > WEIGHT_MAX_KG:
             raise ValidationError("kilograms", f"больше {WEIGHT_MAX_KG} кг")
 
@@ -136,9 +150,16 @@ class VaccinationCertificate:
     valid_until: date
 
     def __post_init__(self) -> None:
+        if not self.vaccine_name.strip():
+            raise ValidationError("vaccine_name", "пустое или из одних пробелов")
         if len(self.vaccine_name) > VACCINE_NAME_MAX_LENGTH:
             raise ValidationError(
                 "vaccine_name", f"длиннее {VACCINE_NAME_MAX_LENGTH} символов"
             )
         if self.valid_until <= self.issued_on:
             raise ValidationError("valid_until", "должна быть позже issued_on")
+        if self.valid_until - self.issued_on > VACCINATION_MAX_PERIOD:
+            raise ValidationError(
+                "valid_until",
+                f"срок действия дольше {VACCINATION_MAX_PERIOD.days} дней",
+            )

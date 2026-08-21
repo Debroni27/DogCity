@@ -31,7 +31,6 @@ from tests.domain.value_objects.contacts.factories import (
     PersonNameFactory,
     PhoneNumberFactory,
 )
-from tests.domain.value_objects.service.factories import ServiceOfferFactory
 from tests.domain.value_objects.sitter_profile.factories import AcceptedDogSizesFactory
 
 INDIVIDUAL_OFFER = ServiceOffer(
@@ -57,29 +56,30 @@ def test_fresh_sitter_has_no_offers_and_no_reviews(sitter: Sitter) -> None:
     assert sitter.rating.average is None
 
 
-def test_published_offer_joins_the_catalogue(sitter: Sitter) -> None:
+def test_published_offer_joins_the_catalogue(
+    sitter: Sitter, shared_offer: ServiceOffer
+) -> None:
     """Выставленное предложение попадает в перечень услуг."""
-    offer = ServiceOfferFactory()
-    sitter.publish_offer(offer, OCCURRED_AT, CorrelationId.new())
-    assert sitter.offers == (offer,)
+    sitter.publish_offer(shared_offer, OCCURRED_AT, CorrelationId.new())
+    assert sitter.offers == (shared_offer,)
 
 
-def test_offers_differ_by_format(sitter: Sitter) -> None:
+def test_offers_differ_by_format(sitter: Sitter, shared_offer: ServiceOffer) -> None:
     """Групповое и индивидуальное предложения одной услуги живут раздельно."""
-    shared = ServiceOfferFactory()
-    sitter.publish_offer(shared, OCCURRED_AT, CorrelationId.new())
+    sitter.publish_offer(shared_offer, OCCURRED_AT, CorrelationId.new())
     sitter.publish_offer(INDIVIDUAL_OFFER, OCCURRED_AT, CorrelationId.new())
     assert len(sitter.offers) == 2
 
 
-def test_withdrawn_offer_leaves_the_catalogue(sitter: Sitter) -> None:
+def test_withdrawn_offer_leaves_the_catalogue(
+    sitter: Sitter, shared_offer: ServiceOffer
+) -> None:
     """Снятое предложение исчезает из перечня."""
-    offer = ServiceOfferFactory()
-    sitter.publish_offer(offer, OCCURRED_AT, CorrelationId.new())
+    sitter.publish_offer(shared_offer, OCCURRED_AT, CorrelationId.new())
     sitter.withdraw_offer(
-        offer.service_type,
-        offer.tarification,
-        offer.service_format,
+        shared_offer.service_type,
+        shared_offer.tarification,
+        shared_offer.service_format,
         OCCURRED_AT,
         CorrelationId.new(),
     )

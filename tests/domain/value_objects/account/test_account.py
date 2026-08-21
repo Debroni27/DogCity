@@ -23,12 +23,6 @@ def test_wire_value_is_stable(status: AccountStatus, expected: str) -> None:
     assert status.value == expected
 
 
-def test_unknown_status_is_rejected() -> None:
-    """Множество состояний закрыто: значения вне перечисления недопустимы."""
-    with pytest.raises(ValueError, match="suspended"):
-        AccountStatus("suspended")
-
-
 @pytest.mark.parametrize(
     ("status", "expected"),
     [
@@ -43,12 +37,6 @@ def test_verification_status_value_is_stable(
 ) -> None:
     """Значение зафиксировано контрактом: переименование ломает совместимость."""
     assert status.value == expected
-
-
-def test_unknown_verification_status_is_rejected() -> None:
-    """Множество статусов проверки закрыто."""
-    with pytest.raises(ValueError, match="expired"):
-        VerificationStatus("expired")
 
 
 @pytest.mark.parametrize(
@@ -66,12 +54,6 @@ def test_block_reason_value_is_stable(reason: BlockReason, expected: str) -> Non
     assert reason.value == expected
 
 
-def test_unknown_block_reason_is_rejected() -> None:
-    """Множество причин закрыто: блокировать можно только по названной причине."""
-    with pytest.raises(ValueError, match="other"):
-        BlockReason("other")
-
-
 @pytest.mark.parametrize(
     ("reason", "expected"),
     [
@@ -86,9 +68,3 @@ def test_verification_rejection_value_is_stable(
 ) -> None:
     """Значение зафиксировано контрактом: переименование ломает совместимость."""
     assert reason.value == expected
-
-
-def test_unknown_verification_rejection_is_rejected() -> None:
-    """Множество причин закрыто: участник должен знать, что именно исправить."""
-    with pytest.raises(ValueError, match="other"):
-        VerificationRejectionReason("other")

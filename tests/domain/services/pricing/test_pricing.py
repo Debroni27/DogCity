@@ -7,7 +7,7 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from src.domain.services import calculate_total
-from src.domain.value_objects import Money, Tarification
+from src.domain.value_objects import INTERVAL_MAX_DURATION, Money, Tarification
 from tests.domain.value_objects.service.factories import ServiceOfferFactory
 from tests.domain.value_objects.time_interval.factories import (
     BASE_MOMENT,
@@ -15,7 +15,8 @@ from tests.domain.value_objects.time_interval.factories import (
 )
 
 PRICE = Money(500)
-MAX_UNITS = 100_000
+MAX_HOURS = INTERVAL_MAX_DURATION // timedelta(hours=1)
+MAX_MINUTES = INTERVAL_MAX_DURATION // timedelta(minutes=1)
 
 
 @pytest.mark.parametrize(
@@ -39,7 +40,7 @@ def test_started_unit_is_paid_in_full(
     assert calculate_total(offer, interval) == PRICE * expected_units
 
 
-@given(hours=st.integers(min_value=1, max_value=MAX_UNITS))
+@given(hours=st.integers(min_value=1, max_value=MAX_HOURS))
 def test_whole_hours_are_not_rounded_up(hours: int) -> None:
     """Точное число часов не превращается в лишний оплаченный час."""
     offer = ServiceOfferFactory(price=PRICE, tarification=Tarification.PER_HOUR)
@@ -47,7 +48,7 @@ def test_whole_hours_are_not_rounded_up(hours: int) -> None:
     assert calculate_total(offer, interval) == PRICE * hours
 
 
-@given(minutes=st.integers(min_value=1, max_value=MAX_UNITS))
+@given(minutes=st.integers(min_value=1, max_value=MAX_MINUTES))
 def test_any_interval_costs_at_least_one_unit(minutes: int) -> None:
     """Услуга не бывает бесплатной: длительность строго положительна."""
     offer = ServiceOfferFactory(price=PRICE, tarification=Tarification.PER_DAY)
@@ -56,8 +57,8 @@ def test_any_interval_costs_at_least_one_unit(minutes: int) -> None:
 
 
 @given(
-    first=st.integers(min_value=1, max_value=MAX_UNITS),
-    second=st.integers(min_value=1, max_value=MAX_UNITS),
+    first=st.integers(min_value=1, max_value=MAX_MINUTES),
+    second=st.integers(min_value=1, max_value=MAX_MINUTES),
 )
 def test_longer_interval_never_costs_less(first: int, second: int) -> None:
     """Более длинный интервал не может стоить дешевле короткого."""

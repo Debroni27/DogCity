@@ -15,6 +15,7 @@ from src.domain.value_objects import (
     SMALL_MAX_KG,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    WEIGHT_MIN_KG,
     BehaviorTrait,
     BirthDate,
     DogSize,
@@ -108,7 +109,7 @@ def test_weight_at_upper_limit_is_accepted() -> None:
 @pytest.mark.parametrize(
     ("kilograms", "expected"),
     [
-        (Decimal("0.5"), DogSize.SMALL),
+        (WEIGHT_MIN_KG, DogSize.SMALL),
         (SMALL_MAX_KG, DogSize.SMALL),
         (SMALL_MAX_KG + Decimal("0.01"), DogSize.MEDIUM),
         (MEDIUM_MAX_KG, DogSize.MEDIUM),
@@ -122,8 +123,8 @@ def test_size_boundaries(kilograms: Decimal, expected: DogSize) -> None:
 
 
 @given(
-    first=st.decimals(min_value=Decimal("0.1"), max_value=WEIGHT_MAX_KG, places=2),
-    second=st.decimals(min_value=Decimal("0.1"), max_value=WEIGHT_MAX_KG, places=2),
+    first=st.decimals(min_value=WEIGHT_MIN_KG, max_value=WEIGHT_MAX_KG, places=2),
+    second=st.decimals(min_value=WEIGHT_MIN_KG, max_value=WEIGHT_MAX_KG, places=2),
 )
 def test_size_never_decreases_with_weight(first: Decimal, second: Decimal) -> None:
     """Более тяжёлая собака никогда не получает меньшую категорию."""

@@ -16,6 +16,8 @@ class OrderComment:
     value: str
 
     def __post_init__(self) -> None:
+        if not self.value.strip():
+            raise ValidationError("value", "пустой: комментария нет — это None")
         if len(self.value) > ORDER_COMMENT_MAX_LENGTH:
             raise ValidationError(
                 "value", f"длиннее {ORDER_COMMENT_MAX_LENGTH} символов"

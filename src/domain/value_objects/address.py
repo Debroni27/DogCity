@@ -21,19 +21,23 @@ class Address:
     apartment: str | None = None
 
     def __post_init__(self) -> None:
+        if not self.city.strip():
+            raise ValidationError("city", "пустое или из одних пробелов")
         if len(self.city) > CITY_MAX_LENGTH:
-            raise ValidationError(
-                "city", f"длиннее {CITY_MAX_LENGTH} символов"
-            )
+            raise ValidationError("city", f"длиннее {CITY_MAX_LENGTH} символов")
+        if not self.street.strip():
+            raise ValidationError("street", "пустое или из одних пробелов")
         if len(self.street) > STREET_MAX_LENGTH:
-            raise ValidationError(
-                "street", f"длиннее {STREET_MAX_LENGTH} символов"
-            )
+            raise ValidationError("street", f"длиннее {STREET_MAX_LENGTH} символов")
+        if not self.building.strip():
+            raise ValidationError("building", "пустое или из одних пробелов")
         if len(self.building) > BUILDING_MAX_LENGTH:
-            raise ValidationError(
-                "building", f"длиннее {BUILDING_MAX_LENGTH} символов"
-            )
-        if self.apartment is not None and len(self.apartment) > BUILDING_MAX_LENGTH:
+            raise ValidationError("building", f"длиннее {BUILDING_MAX_LENGTH} символов")
+        if self.apartment is None:
+            return
+        if not self.apartment.strip():
+            raise ValidationError("apartment", "пустое: квартиры нет — это None")
+        if len(self.apartment) > BUILDING_MAX_LENGTH:
             raise ValidationError(
                 "apartment", f"длиннее {BUILDING_MAX_LENGTH} символов"
             )

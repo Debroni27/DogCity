@@ -44,12 +44,15 @@ from src.domain.value_objects.order_status import (
     RejectionReason,
 )
 from src.domain.value_objects.pet_profile import (
+    BIRTH_DATE_MIN,
     BREED_MAX_LENGTH,
     MEDIUM_MAX_KG,
     PET_NAME_MAX_LENGTH,
     SMALL_MAX_KG,
+    VACCINATION_MAX_PERIOD,
     VACCINE_NAME_MAX_LENGTH,
     WEIGHT_MAX_KG,
+    WEIGHT_MIN_KG,
     BehaviorTrait,
     BirthDate,
     Breed,
@@ -77,14 +80,19 @@ from src.domain.value_objects.sitter_profile import (
     AcceptedDogSizes,
     Capacity,
 )
-from src.domain.value_objects.time_interval import TimeInterval
+from src.domain.value_objects.time_interval import (
+    INTERVAL_MAX_DURATION,
+    TimeInterval,
+)
 
 __all__ = (
+    "BIRTH_DATE_MIN",
     "BREED_MAX_LENGTH",
     "BUILDING_MAX_LENGTH",
     "CAPACITY_MAX",
     "CITY_MAX_LENGTH",
     "EMAIL_MAX_LENGTH",
+    "INTERVAL_MAX_DURATION",
     "MEDIUM_MAX_KG",
     "NAME_MAX_LENGTH",
     "ORDER_COMMENT_MAX_LENGTH",
@@ -96,8 +104,10 @@ __all__ = (
     "REVIEW_TEXT_MAX_LENGTH",
     "SMALL_MAX_KG",
     "STREET_MAX_LENGTH",
+    "VACCINATION_MAX_PERIOD",
     "VACCINE_NAME_MAX_LENGTH",
     "WEIGHT_MAX_KG",
+    "WEIGHT_MIN_KG",
     "AcceptedDogSizes",
     "AccountStatus",
     "Address",

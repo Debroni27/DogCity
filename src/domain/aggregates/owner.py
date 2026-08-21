@@ -193,6 +193,8 @@ class Owner:
             raise InvariantViolationError(f"питомцев не может быть больше {PETS_MAX}")
         if pet_id in self._pets:
             raise InvariantViolationError("такой питомец у владельца уже есть")
+        if birth_date.value > occurred_at.date():
+            raise InvariantViolationError("питомец не может родиться в будущем")
         self._record(
             PetAdded(
                 event_id=EventId.new(),

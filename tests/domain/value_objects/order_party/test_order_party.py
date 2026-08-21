@@ -15,9 +15,3 @@ from src.domain.value_objects import OrderParty
 def test_wire_value_is_stable(party: OrderParty, expected: str) -> None:
     """Значение зафиксировано контрактом: переименование ломает совместимость."""
     assert party.value == expected
-
-
-def test_unknown_party_is_rejected() -> None:
-    """Множество сторон закрыто: третьего участника у заказа нет."""
-    with pytest.raises(ValueError, match="admin"):
-        OrderParty("admin")

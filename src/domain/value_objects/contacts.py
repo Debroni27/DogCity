@@ -29,11 +29,19 @@ class PersonName:
     middle_name: str | None = None
 
     def __post_init__(self) -> None:
+        if not self.last_name.strip():
+            raise ValidationError("last_name", "пустое или из одних пробелов")
         if len(self.last_name) > NAME_MAX_LENGTH:
             raise ValidationError("last_name", f"длиннее {NAME_MAX_LENGTH} символов")
+        if not self.first_name.strip():
+            raise ValidationError("first_name", "пустое или из одних пробелов")
         if len(self.first_name) > NAME_MAX_LENGTH:
             raise ValidationError("first_name", f"длиннее {NAME_MAX_LENGTH} символов")
-        if self.middle_name is not None and len(self.middle_name) > NAME_MAX_LENGTH:
+        if self.middle_name is None:
+            return
+        if not self.middle_name.strip():
+            raise ValidationError("middle_name", "пустое: отчества нет — это None")
+        if len(self.middle_name) > NAME_MAX_LENGTH:
             raise ValidationError("middle_name", f"длиннее {NAME_MAX_LENGTH} символов")
 
 
@@ -65,7 +73,10 @@ class Email:
                 "value", f"длиннее {EMAIL_MAX_LENGTH} символов"
             )
         local, separator, host = self.value.partition("@")
-        if not separator or not local or "." not in host:
-            raise ValidationError(
-                "value", "не похож на адрес электронной почты"
-            )
+        if not separator or not local or "@" in host:
+            raise ValidationError("value", "ровно один знак @ и часть до него")
+        labels = host.split(".")
+        if len(labels) < 2 or not all(labels):
+            raise ValidationError("value", "домен из непустых частей через точку")
+        if any(char.isspace() for char in self.value):
+            raise ValidationError("value", "пробельные символы недопустимы")
